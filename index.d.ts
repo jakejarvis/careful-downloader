@@ -1,14 +1,15 @@
 export interface Options {
   /**
-   * Filename of the download, helpful if the one provided by the server doesn't
-   * match the name listed in the checksum file.
+   * Manually set the filename of the download, helpful if the one provided by
+   * the server doesn't match the filename listed in the checksum file.
    *
    * @default Extracted from the download URL.
    */
   readonly filename?: string;
 
   /**
-   * Use decompress to extract the final download to the destination directory.
+   * Use [`decompress`](https://github.com/kevva/decompress) to extract the
+   * final download to the destination directory.
    *
    * @default false
    */
@@ -45,7 +46,7 @@ export interface Options {
    * On recent releases of OpenSSL, `openssl list -digest-algorithms` will
    * display the available digest algorithms:
    *
-   * https://nodejs.org/dist/latest-v4.x/docs/api/crypto.html#crypto_crypto_createhash_algorithm
+   * https://nodejs.org/dist/latest-v14.x/docs/api/crypto.html#crypto_crypto_createhash_algorithm_options
    *
    * @default "sha256"
    */
@@ -63,4 +64,4 @@ export interface Options {
 /**
  * Download a file and validate it with its corresponding checksum file.
  */
-export default function downloadAndCheck(downloadUrl: string, checksumUrl: string, options: Options): Promise<string>;
+export default function downloader(downloadUrl: string, checksumUrl: string, options: Options): Promise<string>;

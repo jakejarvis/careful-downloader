@@ -12,7 +12,7 @@ import urlParse from "url-parse";
 // https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c#what-do-i-use-instead-of-__dirname-and-__filename
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-export default async function downloadAndCheck(downloadUrl, checksumUrl, options) {
+export default async function downloader(downloadUrl, checksumUrl, options) {
   // normalize options and set defaults
   options = {
     filename: options.filename ?? urlParse(downloadUrl).pathname.split("/").pop(),
