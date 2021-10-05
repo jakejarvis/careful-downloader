@@ -1,7 +1,6 @@
 import path from "path";
 import stream from "stream";
 import { promisify } from "util";
-import { fileURLToPath } from "url";
 import fs from "fs-extra";
 import tempy from "tempy";
 import got from "got";
@@ -9,16 +8,13 @@ import sumchecker from "sumchecker";
 import decompress from "decompress";
 import urlParse from "url-parse";
 
-// https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c#what-do-i-use-instead-of-__dirname-and-__filename
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
 export default async function downloader(downloadUrl, checksumUrl, options) {
   // normalize options and set defaults
   options = {
     filename: options.filename ?? urlParse(downloadUrl).pathname.split("/").pop(),
     extract: !!options.extract,
-    tempDir: options.tempDir ? path.resolve(__dirname, options.tempDir) : tempy.directory(),
-    destDir: options.destDir ? path.resolve(__dirname, options.destDir) : path.resolve(__dirname, "download"),
+    tempDir: options.tempDir ? path.resolve(process.cwd(), options.tempDir) : tempy.directory(),
+    destDir: options.destDir ? path.resolve(process.cwd(), options.destDir) : path.resolve(process.cwd(), "download"),
     cleanDestDir: !!options.cleanDestDir,
     algorithm: options.algorithm ?? "sha256",
     encoding: options.encoding ?? "binary",
