@@ -14,7 +14,7 @@
     "url": "https://github.com/jakejarvis/careful-download.git"
   },
   "type": "module",
-  "module": "./index.js",
+  "exports": "./index.js",
   "types": "./index.d.ts",
   "files": [
     "index.js",

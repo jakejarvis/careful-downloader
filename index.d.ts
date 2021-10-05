@@ -15,6 +15,14 @@ export interface Options {
   readonly extract?: boolean;
 
   /**
+   * Path to temporary directory for unverified and/or unextracted downloads.
+   * Automatically generated if not set (recommended).
+   *
+   * @default `tempy.directory()`
+   */
+  readonly tempDir?: string;
+
+  /**
    * Full path or directory name relative to module to store the validated
    * download.
    *
@@ -23,12 +31,11 @@ export interface Options {
   readonly destDir?: string;
 
   /**
-   * Path to temporary directory for unverified and/or unextracted downloads.
-   * Automatically generated if not set (recommended).
+   * Delete any existing files in the destination directory before downloading.
    *
-   * @default `tempy.directory()`
+   * @default false
    */
-  readonly tempDir?: string;
+  readonly cleanDestDir?: boolean;
 
   /**
    * The algorithm used by the checksum file. Available options are dependent on

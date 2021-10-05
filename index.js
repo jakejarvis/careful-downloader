@@ -17,8 +17,9 @@ export default async function downloadAndCheck(downloadUrl, checksumUrl, options
   options = {
     filename: options.filename ?? urlParse(downloadUrl).pathname.split("/").pop(),
     extract: !!options.extract,
-    destDir: options.destDir ? path.resolve(__dirname, options.destDir) : path.resolve(__dirname, "download"),
     tempDir: options.tempDir ? path.resolve(__dirname, options.tempDir) : tempy.directory(),
+    destDir: options.destDir ? path.resolve(__dirname, options.destDir) : path.resolve(__dirname, "download"),
+    cleanDestDir: !!options.cleanDestDir,
     algorithm: options.algorithm ?? "sha256",
     encoding: options.encoding ?? "binary",
   };
@@ -32,6 +33,11 @@ export default async function downloadAndCheck(downloadUrl, checksumUrl, options
 
     // validate the checksum of the download
     await checkChecksum(options.tempDir, path.join(options.tempDir, "checksums.txt"), options.filename, options.algorithm, options.encoding);
+
+    // optionally clear the target directory of existing files
+    if (options.cleanDestDir) {
+      await fs.remove(options.destDir);
+    }
 
     // ensure the target directory exists
     await fs.mkdirp(options.destDir);
