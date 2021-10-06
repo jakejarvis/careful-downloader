@@ -9,6 +9,14 @@ import decompress from "decompress";
 import urlParse from "url-parse";
 
 export default async function downloader(downloadUrl, checksumUrl, options) {
+  options = options || {};
+
+  // don't delete the temp dir if set manually and dir exists
+  let deleteTempDir = true;
+  if (options.tempDir && fs.pathExistsSync(options.tempDir)) {
+    deleteTempDir = false;
+  }
+
   // normalize options and set defaults
   options = {
     filename: options.filename || urlParse(downloadUrl).pathname.split("/").pop(),
@@ -48,8 +56,10 @@ export default async function downloader(downloadUrl, checksumUrl, options) {
       return path.join(options.destDir, options.filename);
     }
   } finally {
-    // delete temporary directory
-    await fs.remove(options.tempDir);
+    // delete temporary directory (except for edge cases above)
+    if (deleteTempDir) {
+      await fs.remove(options.tempDir);
+    }
   }
 }
 
