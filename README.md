@@ -1,23 +1,23 @@
-# 🕵️‍♀️ careful-download
+# 🕵️‍♀️ careful-downloader
 
-[![CI](https://github.com/jakejarvis/careful-download/actions/workflows/ci.yml/badge.svg)](https://github.com/jakejarvis/careful-download/actions/workflows/ci.yml)
-[![npm](https://img.shields.io/npm/v/careful-download?logo=npm)](https://www.npmjs.com/package/careful-download)
-[![MIT License](https://img.shields.io/github/license/jakejarvis/careful-download?color=red)](LICENSE)
+[![CI](https://github.com/jakejarvis/careful-downloader/actions/workflows/ci.yml/badge.svg)](https://github.com/jakejarvis/careful-downloader/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/careful-downloader?logo=npm)](https://www.npmjs.com/package/careful-downloader)
+[![MIT License](https://img.shields.io/github/license/jakejarvis/careful-downloader?color=red)](LICENSE)
 
 Downloads a file and its checksums to a temporary directory, validates the hash, and optionally extracts it if safe. A headache-averting wrapper around [`got`](https://github.com/sindresorhus/got), [`sumchecker`](https://github.com/malept/sumchecker), and [`decompress`](https://github.com/kevva/decompress).
 
 ## Install
 
 ```sh
-npm install careful-download
+npm install careful-downloader
 # or...
-yarn add careful-download
+yarn add careful-downloader
 ```
 
 ## Usage
 
 ```js
-import downloader from "careful-download";
+import downloader from "careful-downloader";
 
 await downloader(
   "https://github.com/gohugoio/hugo/releases/download/v0.88.1/hugo_extended_0.88.1_Windows-64bit.zip",

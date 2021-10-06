@@ -1,9 +1,9 @@
 {
-  "name": "careful-download",
+  "name": "careful-downloader",
   "version": "0.0.0",
   "description": "🕵️‍♀️ Downloads a file and its checksums to a temporary directory, validates the hash, and optionally extracts it if safe.",
   "license": "MIT",
-  "homepage": "https://github.com/jakejarvis/careful-download",
+  "homepage": "https://github.com/jakejarvis/careful-downloader",
   "author": {
     "name": "Jake Jarvis",
     "email": "jake@jarv.is",
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jakejarvis/careful-download.git"
+    "url": "https://github.com/jakejarvis/careful-downloader.git"
   },
   "type": "module",
   "exports": "./index.js",
