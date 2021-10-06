@@ -6,7 +6,9 @@ import { expect } from "chai";
 
 import downloader from "../index.js";
 
-it("hugo.exe was downloaded and extracted", async () => {
+it("hugo.exe was downloaded and extracted", async function () {
+  this.timeout(30000); // increase timeout to an excessive 30 seconds for CI
+
   const outDir = path.join(tempy.directory());
 
   await downloader(

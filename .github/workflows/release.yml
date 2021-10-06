@@ -19,4 +19,5 @@ jobs:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       run: |
         yarn install --frozen-lockfile
+        yarn test
         yarn publish
