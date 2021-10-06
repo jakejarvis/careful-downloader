@@ -40,9 +40,19 @@ await downloader(
 
 Type: `string`
 
+Absolute URL to the desired file to download.
+
 #### checksumUrl
 
 Type: `string`
+
+Absolute URL to a checksums file, usually just a `.txt` containing filenames and hashes [like this](https://github.com/gohugoio/hugo/releases/download/v0.88.1/hugo_0.88.1_checksums.txt):
+
+```plaintext
+27493d1903a41e2dd47edc76a79918d95dfbb31474380d3704322e47ffd11b74  hugo_0.88.1_Windows-32bit.zip
+ad81192d188cb584a73074d3dea9350d4609a13ed5fccaafd229b424247e5890  hugo_0.88.1_Windows-64bit.zip
+aaa20e258cd668cff66400d365d73ddc375e44487692d49a5285b56330f6e6b2  hugo_extended_0.88.1_Windows-64bit.zip
+```
 
 #### options
 
