@@ -28,7 +28,7 @@ export default async function downloader(downloadUrl, checksumUrl, options) {
     ]);
 
     // validate the checksum of the download
-    await checkChecksum(options.tempDir, path.join(options.tempDir, "checksums.txt"), options.filename, options.algorithm, options.encoding);
+    await checkChecksum(options.tempDir, options.filename, "checksums.txt", options.algorithm, options.encoding);
 
     // optionally clear the target directory of existing files
     if (options.cleanDestDir) {
@@ -64,8 +64,8 @@ async function downloadFile(url, dest) {
 }
 
 // Check da checksum.
-async function checkChecksum(baseDir, checksumFile, downloadFile, algorithm, encoding) {
-  const checker = new sumchecker.ChecksumValidator(algorithm, checksumFile, {
+async function checkChecksum(baseDir, downloadFile, checksumFile, algorithm, encoding) {
+  const checker = new sumchecker.ChecksumValidator(algorithm, path.join(baseDir, checksumFile), {
     defaultTextEncoding: encoding,
   });
 
