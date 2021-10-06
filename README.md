@@ -77,7 +77,7 @@ Use [`decompress`](https://github.com/kevva/decompress) to extract the final dow
 Type: `string`\
 Default: [`tempy.directory()`](https://github.com/sindresorhus/tempy#tempydirectoryoptions)
 
-Path to temporary directory for unverified and/or unextracted downloads. Automatically generated if not set (recommended).
+Path to temporary directory for unverified and/or unextracted downloads. Automatically generated if not set (recommended). If set manually, the directory isn't purged upon finishing for security reasons.
 
 ##### destDir
 
