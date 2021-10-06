@@ -9,6 +9,7 @@ import decompress from "decompress";
 import urlParse from "url-parse";
 
 export default async function downloader(downloadUrl, checksumUrl, options) {
+  // intialize options if none are set
   options = options || {};
 
   // don't delete the temp dir if set manually and dir exists
@@ -36,24 +37,26 @@ export default async function downloader(downloadUrl, checksumUrl, options) {
     ]);
 
     // validate the checksum of the download
-    await checkChecksum(options.tempDir, options.filename, "checksums.txt", options.algorithm, options.encoding);
+    if (await checkChecksum(options.tempDir, options.filename, "checksums.txt", options.algorithm, options.encoding)) {
+      // optionally clear the target directory of existing files
+      if (options.cleanDestDir) {
+        await fs.remove(options.destDir);
+      }
 
-    // optionally clear the target directory of existing files
-    if (options.cleanDestDir) {
-      await fs.remove(options.destDir);
-    }
+      // ensure the target directory exists
+      await fs.mkdirp(options.destDir);
 
-    // ensure the target directory exists
-    await fs.mkdirp(options.destDir);
-
-    if (options.extract) {
-      // decompress download and move resulting files to final destination
-      await decompress(path.join(options.tempDir, options.filename), options.destDir);
-      return options.destDir;
+      if (options.extract) {
+        // decompress download and move resulting files to final destination
+        await decompress(path.join(options.tempDir, options.filename), options.destDir);
+        return options.destDir;
+      } else {
+        // move verified download to final destination as-is
+        await fs.copy(path.join(options.tempDir, options.filename), path.join(options.destDir, options.filename));
+        return path.join(options.destDir, options.filename);
+      }
     } else {
-      // move verified download to final destination as-is
-      await fs.copy(path.join(options.tempDir, options.filename), path.join(options.destDir, options.filename));
-      return path.join(options.destDir, options.filename);
+      throw new Error(`Invalid checksum for ${options.filename}.`);
     }
   } finally {
     // delete temporary directory (except for edge cases above)
@@ -67,7 +70,7 @@ export default async function downloader(downloadUrl, checksumUrl, options) {
 async function downloadFile(url, dest) {
   const pipeline = promisify(stream.pipeline);
 
-  return await pipeline(
+  return pipeline(
     got.stream(url, { followRedirect: true }), // GitHub releases redirect to unpredictable URLs
     fs.createWriteStream(dest),
   );
@@ -79,5 +82,5 @@ async function checkChecksum(baseDir, downloadFile, checksumFile, algorithm, enc
     defaultTextEncoding: encoding,
   });
 
-  return await checker.validate(baseDir, downloadFile);
+  return checker.validate(baseDir, downloadFile);
 }

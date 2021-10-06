@@ -6,7 +6,7 @@ import { expect } from "chai";
 
 import downloader from "../index.js";
 
-it("hugo.exe was downloaded and extracted", async function () {
+it("verified checksum, hugo.exe was extracted", async function () {
   this.timeout(30000); // increase timeout to an excessive 30 seconds for CI
 
   const outDir = path.join(tempy.directory());
@@ -27,24 +27,24 @@ it("hugo.exe was downloaded and extracted", async function () {
   fs.removeSync(outDir);
 });
 
-// TODO: FIX THIS
-/*
-it("incorrect checksum", async () => {
+it("incorrect checksum, not extracted", async function () {
+  this.timeout(30000); // increase timeout to an excessive 30 seconds for CI
+
   const outDir = path.join(tempy.directory());
 
-  expect(await downloader(
-    "https://github.com/gohugoio/hugo/releases/download/v0.88.0/hugo_0.88.0_NetBSD-ARM.tar.gz",
-    "https://github.com/gohugoio/hugo/releases/download/v0.88.1/hugo_0.88.1_checksums.txt",
-    {
-      destDir: outDir,
-      algorithm: "sha256",
-      encoding: "binary",
-      extract: false,
-    },
-  )).to.throw(/No checksum/);
+  expect(async () => downloader(
+      // download mismatching versions to trigger error
+      "https://github.com/gohugoio/hugo/releases/download/v0.88.0/hugo_0.88.0_Windows-64bit.zip",
+      "https://github.com/gohugoio/hugo/releases/download/v0.88.1/hugo_0.88.1_checksums.txt",
+      {
+        destDir: outDir,
+        algorithm: "sha256",
+        encoding: "binary",
+        extract: false,
+      },
+  )).to.throw;
 
-//  assert(fs.existsSync(path.join(outDir, "hugo.exe")));
+  expect(fs.existsSync(path.join(outDir, "hugo.exe"))).to.be.false;
 
-//  fs.removeSync(outDir);
+  fs.removeSync(outDir);
 });
-*/
