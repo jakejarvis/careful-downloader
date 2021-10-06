@@ -29,5 +29,4 @@ jobs:
         node-version: ${{ matrix.node }}
     - run: yarn install --frozen-lockfile
     - run: yarn audit
-    - run: yarn lint
     - run: yarn test

@@ -11,13 +11,13 @@ import urlParse from "url-parse";
 export default async function downloader(downloadUrl, checksumUrl, options) {
   // normalize options and set defaults
   options = {
-    filename: options.filename ?? urlParse(downloadUrl).pathname.split("/").pop(),
+    filename: options.filename || urlParse(downloadUrl).pathname.split("/").pop(),
     extract: !!options.extract,
     tempDir: options.tempDir ? path.resolve(process.cwd(), options.tempDir) : tempy.directory(),
     destDir: options.destDir ? path.resolve(process.cwd(), options.destDir) : path.resolve(process.cwd(), "download"),
     cleanDestDir: !!options.cleanDestDir,
-    algorithm: options.algorithm ?? "sha256",
-    encoding: options.encoding ?? "binary",
+    algorithm: options.algorithm || "sha256",
+    encoding: options.encoding || "binary",
   };
 
   try {

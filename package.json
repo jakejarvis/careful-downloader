@@ -21,8 +21,7 @@
     "index.d.ts"
   ],
   "scripts": {
-    "lint": "eslint .",
-    "test": "mocha"
+    "test": "eslint . && mocha"
   },
   "dependencies": {
     "decompress": "^4.2.1",
