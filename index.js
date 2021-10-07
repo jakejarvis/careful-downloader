@@ -7,6 +7,7 @@ import got from "got";
 import sumchecker from "sumchecker";
 import decompress from "decompress";
 import urlParse from "url-parse";
+import isPathInCwd from "is-path-in-cwd";
 
 export default async function downloader(downloadUrl, checksumUrl, options) {
   // intialize options if none are set
@@ -23,7 +24,7 @@ export default async function downloader(downloadUrl, checksumUrl, options) {
   };
 
   // throw an error if destDir is outside of the module to prevent path traversal for security reasons
-  if (!options.destDir.startsWith(process.cwd())) {
+  if (!isPathInCwd(options.destDir)) {
     throw new Error(`destDir must be located within '${process.cwd()}', it's currently set to '${options.destDir}'.`);
   }
 
