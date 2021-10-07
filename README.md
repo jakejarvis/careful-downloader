@@ -72,19 +72,12 @@ Default: `false`
 
 Use [`decompress`](https://github.com/kevva/decompress) to extract the final download to the destination directory (assuming it's a `.zip`, `.tar`, `.tar.gz`, etc.).
 
-##### tempDir
-
-Type: `string`\
-Default: [`tempy.directory()`](https://github.com/sindresorhus/tempy#tempydirectoryoptions)
-
-Path to temporary directory for unverified and/or unextracted downloads. Automatically generated if not set (recommended). If set manually, the directory isn't purged upon finishing for security reasons.
-
 ##### destDir
 
 Type: `string`\
 Default: `"./downloads"`
 
-Full path or directory name relative to module to store the validated download.
+Directory path relative to module where the validated download is saved or extracted. **Must be located within `process.cwd()` for security reasons.**
 
 ##### cleanDestDir
 
