@@ -16,16 +16,8 @@ export interface Options {
   readonly extract?: boolean;
 
   /**
-   * Path to temporary directory for unverified and/or unextracted downloads.
-   * Automatically generated if not set (recommended).
-   *
-   * @default `tempy.directory()`
-   */
-  readonly tempDir?: string;
-
-  /**
-   * Full path or directory name relative to module to store the validated
-   * download.
+   * Directory path relative to module where the validated download is saved or
+   * extracted. Must be located within `process.cwd()` for security reasons.
    *
    * @default "./downloads"
    */
