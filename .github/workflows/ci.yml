@@ -30,3 +30,7 @@ jobs:
     - run: yarn install --frozen-lockfile
     - run: yarn audit
     - run: yarn test
+      env:
+        DEBUG: careful-downloader
+        DEBUG_HIDE_DATE: 1
+        DEBUG_COLORS: 0
