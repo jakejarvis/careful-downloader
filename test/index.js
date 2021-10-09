@@ -61,3 +61,17 @@ it("destDir located outside of module, throw error", async function () {
       },
   )).to.throw;
 });
+
+it("zero options, download zip and leave it alone", async function () {
+  this.timeout(30000); // increase timeout to an excessive 30 seconds for CI
+
+  await downloader(
+    "https://github.com/gohugoio/hugo/releases/download/v0.88.1/hugo_extended_0.88.1_Windows-64bit.zip",
+    "https://github.com/gohugoio/hugo/releases/download/v0.88.1/hugo_0.88.1_checksums.txt",
+  );
+
+  expect(fs.existsSync(path.join(__dirname, "../downloads", "hugo_extended_0.88.1_Windows-64bit.zip"))).to.be.true;
+
+  // clean up
+  fs.removeSync(path.join(__dirname, "../downloads"));
+});

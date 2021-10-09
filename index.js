@@ -9,10 +9,7 @@ import decompress from "decompress";
 import urlParse from "url-parse";
 import isPathInCwd from "is-path-in-cwd";
 
-export default async function downloader(downloadUrl, checksumUrl, options) {
-  // intialize options if none are set
-  options = options || {};
-
+export default async function downloader(downloadUrl, checksumUrl, options = {}) {
   // normalize options and set defaults
   options = {
     filename: options.filename || urlParse(downloadUrl).pathname.split("/").pop(),
@@ -68,19 +65,32 @@ export default async function downloader(downloadUrl, checksumUrl, options) {
 
 // Download any file to any destination. Returns a promise.
 async function downloadFile(url, dest) {
+  // get remote file and write locally
   const pipeline = promisify(stream.pipeline);
-
-  return pipeline(
+  const download = await pipeline(
     got.stream(url, { followRedirect: true }), // GitHub releases redirect to unpredictable URLs
     fs.createWriteStream(dest),
   );
+
+  return download;
 }
 
 // Check da checksum.
 async function checkChecksum(baseDir, downloadFile, checksumFile, algorithm, encoding) {
+  // instantiate checksum validator
   const checker = new sumchecker.ChecksumValidator(algorithm, path.join(baseDir, checksumFile), {
     defaultTextEncoding: encoding,
   });
 
-  return checker.validate(baseDir, downloadFile);
+  // finally test the file
+  const valid = await checker.validate(baseDir, downloadFile);
+
+  return valid;
+}
+
+// eslint-disable-next-line no-unused-vars
+async function wait(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
 }
