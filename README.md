@@ -4,7 +4,7 @@
 [![npm](https://img.shields.io/npm/v/careful-downloader?logo=npm)](https://www.npmjs.com/package/careful-downloader)
 [![MIT License](https://img.shields.io/github/license/jakejarvis/careful-downloader?color=red)](LICENSE)
 
-Downloads a file and its checksums to a temporary directory, validates the hash, and optionally extracts it if safe. A headache-averting wrapper around [`got`](https://github.com/sindresorhus/got), [`sumchecker`](https://github.com/malept/sumchecker), and [`decompress`](https://github.com/kevva/decompress).
+Downloads a file and its checksums to a temporary directory, validates the hash, and optionally extracts it if safe.
 
 ## Install
 
@@ -21,20 +21,34 @@ import downloader from "careful-downloader";
 
 await downloader(
   "https://github.com/gohugoio/hugo/releases/download/v0.88.1/hugo_extended_0.88.1_Windows-64bit.zip",
-  "https://github.com/gohugoio/hugo/releases/download/v0.88.1/hugo_0.88.1_checksums.txt",
   {
+    checksumUrl: "https://github.com/gohugoio/hugo/releases/download/v0.88.1/hugo_0.88.1_checksums.txt",
     destDir: "./vendor",
     algorithm: "sha256",
-    encoding: "binary",
     extract: true,
   },
 );
 //=> '/Users/jake/src/carefully-downloaded/vendor/hugo.exe'
 ```
 
+Instead of `options.checksumUrl`, you can also simply provide a hash as a string via `options.checksumHash`.
+
+```js
+await downloader(
+  "https://github.com/gohugoio/hugo/releases/download/v0.88.1/hugo_extended_0.88.1_Windows-64bit.zip",
+  {
+    checksumHash: "aaa20e258cd668cff66400d365d73ddc375e44487692d49a5285b56330f6e6b2",
+    destDir: "./vendor",
+    algorithm: "sha256",
+    extract: false, // default
+  },
+);
+//=> '/Users/jake/src/carefully-downloaded/vendor/hugo_extended_0.88.1_Windows-64bit.zip'
+```
+
 ## API
 
-### downloader(downloadUrl, checksumUrl, options?)
+### downloader(downloadUrl, options)
 
 #### downloadUrl
 
@@ -42,7 +56,11 @@ Type: `string`
 
 Absolute URL to the desired file to download.
 
-#### checksumUrl
+#### options
+
+Type: `object`
+
+##### checksumUrl
 
 Type: `string`
 
@@ -54,9 +72,15 @@ ad81192d188cb584a73074d3dea9350d4609a13ed5fccaafd229b424247e5890  hugo_0.88.1_Wi
 aaa20e258cd668cff66400d365d73ddc375e44487692d49a5285b56330f6e6b2  hugo_extended_0.88.1_Windows-64bit.zip
 ```
 
-#### options
+**Either this option or `checksumHash` is required.**
 
-Type: `object`
+##### checksumHash
+
+Type: `string`
+
+A single hash for the given downloaded file, e.g. `abcd1234abcd1234abcd1234...`.
+
+**Either this option or `checksumUrl` is required.**
 
 ##### filename
 
@@ -98,9 +122,7 @@ On recent releases of OpenSSL, `openssl list -digest-algorithms` will display th
 ##### encoding
 
 Type: `string`\
-Default: `"binary"`
-
-Tell the file stream to read the download as a binary, UTF-8 text file, base64, etc.
+Default: `"hex"`
 
 ## License
 
