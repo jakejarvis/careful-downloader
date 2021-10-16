@@ -23,7 +23,7 @@ await downloader(
   "https://github.com/gohugoio/hugo/releases/download/v0.88.1/hugo_extended_0.88.1_Windows-64bit.zip",
   {
     checksumUrl: "https://github.com/gohugoio/hugo/releases/download/v0.88.1/hugo_0.88.1_checksums.txt",
-    destDir: "./vendor",
+    destDir: "vendor", // relative to process.cwd()
     algorithm: "sha256",
     extract: true,
   },
@@ -31,16 +31,18 @@ await downloader(
 //=> '/Users/jake/src/carefully-downloaded/vendor/hugo.exe'
 ```
 
-Instead of `options.checksumUrl`, you can also simply provide a hash as a string via `options.checksumHash`.
+Instead of a `checksumUrl`, you can also simply provide a hash as a string via `checksumHash`:
 
 ```js
+import downloader from "careful-downloader";
+
 await downloader(
   "https://github.com/gohugoio/hugo/releases/download/v0.88.1/hugo_extended_0.88.1_Windows-64bit.zip",
   {
     checksumHash: "aaa20e258cd668cff66400d365d73ddc375e44487692d49a5285b56330f6e6b2",
-    destDir: "./vendor",
+    destDir: "vendor",
     algorithm: "sha256",
-    extract: false, // default
+    extract: false, // the default
   },
 );
 //=> '/Users/jake/src/carefully-downloaded/vendor/hugo_extended_0.88.1_Windows-64bit.zip'
