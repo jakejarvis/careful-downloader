@@ -47,9 +47,6 @@ export default async (downloadUrl, options = {}) => {
   debug(`Temp dir generated: '${tempDir}'`);
 
   try {
-    // get the desired file
-    await download(downloadUrl, path.join(tempDir, options.filename));
-
     // validate the checksum of the download
     let validated = false;
 
@@ -57,8 +54,14 @@ export default async (downloadUrl, options = {}) => {
       debug("Using a downloaded checksum file to validate...");
 
       const checksumFilename = new URL(checksumKey).pathname.split("/").pop();
-      await download(checksumKey, path.join(tempDir, checksumFilename));
 
+      // simultaneously download the desired file and its checksums
+      await Promise.all([
+        download(downloadUrl, path.join(tempDir, options.filename)),
+        download(checksumKey, path.join(tempDir, checksumFilename)),
+      ]);
+
+      // validate the checksum
       // eslint-disable-next-line max-len
       if (await checksumViaFile(path.join(tempDir, options.filename), path.join(tempDir, checksumFilename), options.algorithm, options.encoding)) {
         validated = true;
@@ -66,6 +69,10 @@ export default async (downloadUrl, options = {}) => {
     } else if (checksumMethod === "string") {
       debug("Using a provided hash to validate...");
 
+      // get the desired file
+      await download(downloadUrl, path.join(tempDir, options.filename));
+
+      // validate the checksum
       // eslint-disable-next-line max-len
       if (await checksumViaString(path.join(tempDir, options.filename), checksumKey, options.algorithm, options.encoding)) {
         validated = true;
