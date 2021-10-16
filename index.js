@@ -8,9 +8,13 @@ import debug from "./lib/debug.js";
 import download from "./lib/download.js";
 import { checksumViaFile, checksumViaString } from "./lib/checksum.js";
 
-export default async (downloadUrl, options = {}) => {
+export default async (downloadUrl, options) => {
+  if (!options) {
+    throw new Error("Missing the options object. See README for details.");
+  }
   debug(`User-provided config: ${JSON.stringify(options)}`);
 
+  // figure out which method we're using to validate (via a checksum file or straight-up hash)
   let checksumMethod;
   let checksumKey;
   if (options.checksumUrl) {
@@ -22,9 +26,9 @@ export default async (downloadUrl, options = {}) => {
     checksumMethod = "string";
     checksumKey = options.checksumHash;
   } else {
-    throw new Error("must either provide checksumUrl or checksumHash.");
+    throw new Error("Must provide either checksumUrl or checksumHash.");
   }
-  debug(`Provided a ${checksumMethod} to validate against: ${checksumKey}`);
+  debug(`Provided a ${checksumMethod} to validate against: '${checksumKey}'`);
 
   // normalize options and set defaults
   options = {
@@ -61,22 +65,26 @@ export default async (downloadUrl, options = {}) => {
         download(checksumKey, path.join(tempDir, checksumFilename)),
       ]);
 
-      // validate the checksum
-      // eslint-disable-next-line max-len
-      if (await checksumViaFile(path.join(tempDir, options.filename), path.join(tempDir, checksumFilename), options.algorithm, options.encoding)) {
-        validated = true;
-      }
+      // finally do the calculations
+      validated = await checksumViaFile(
+        path.join(tempDir, options.filename),
+        path.join(tempDir, checksumFilename),
+        options.algorithm,
+        options.encoding,
+      );
     } else if (checksumMethod === "string") {
       debug("Using a provided hash to validate...");
 
       // get the desired file
       await download(downloadUrl, path.join(tempDir, options.filename));
 
-      // validate the checksum
-      // eslint-disable-next-line max-len
-      if (await checksumViaString(path.join(tempDir, options.filename), checksumKey, options.algorithm, options.encoding)) {
-        validated = true;
-      }
+      // finally do the calculations
+      validated = await checksumViaString(
+        path.join(tempDir, options.filename),
+        checksumKey,
+        options.algorithm,
+        options.encoding,
+      );
     }
 
     // stop here if the checksum wasn't validated by either method
