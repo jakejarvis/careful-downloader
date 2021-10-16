@@ -1,5 +1,21 @@
 export interface Options {
   /**
+   * Absolute URL to a checksums file, usually just a `.txt` containing
+   * filenames and hashes.
+   *
+   * Either this option or `options.checksumHash` is required.
+   */
+  readonly checksumUrl?: string;
+
+  /**
+   * A single hash for the given downloaded file.
+   * e.g. `abcd1234abcd1234abcd1234...`.
+   *
+   * Either this option or `options.checksumUrl` is required.
+   */
+  readonly checksumHash?: string;
+
+  /**
    * Manually set the filename of the download, helpful if the one provided by
    * the server doesn't match the filename listed in the checksum file.
    *
@@ -45,15 +61,15 @@ export interface Options {
   readonly algorithm?: string;
 
   /**
-   * Tell the file stream to read the download as a binary, UTF-8 text file,
-   * base64, etc.
+   * Tell the file stream to read the checksums as a string (hex) or binary.
    *
-   * @default "binary"
-  */
+   * @default "hex"
+   */
   readonly encoding?: BufferEncoding;
 }
 
 /**
- * Download a file and validate it with its corresponding checksum file.
+ * Download a file and validate it against a checksum hash. Returns the path to
+ * the validated file or folder (if it's safe).
  */
-export default function downloader(downloadUrl: string, checksumUrl: string, options: Options): Promise<string>;
+export default function downloader(downloadUrl: string, options: Options): Promise<string>;
