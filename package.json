@@ -1,7 +1,7 @@
 {
   "name": "careful-downloader",
   "version": "1.4.0",
-  "description": "🕵️‍♀️ Downloads a file and its checksums to a temporary directory, validates the hash, and optionally extracts it if safe.",
+  "description": "🕵️‍♀️ Downloads a file and its checksums, validates the hash, and optionally extracts it if safe.",
   "license": "MIT",
   "homepage": "https://github.com/jakejarvis/careful-downloader",
   "author": {
@@ -37,7 +37,6 @@
     "@types/debug": "^4.1.7",
     "@types/decompress": "^4.2.4",
     "@types/fs-extra": "^9.0.13",
-    "@types/url-parse": "^1.4.4",
     "chai": "^4.3.4",
     "eslint": "^8.0.1",
     "mocha": "^9.1.3"
