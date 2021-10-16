@@ -93,14 +93,14 @@ export default async (downloadUrl, options) => {
     }
 
     // optionally clear the target directory of existing files
-    if (options.cleanDestDir && fs.existsSync(options.destDir)) {
+    if (options.cleanDestDir && await fs.access(options.destDir)) {
       debug(`Deleting contents of '${options.destDir}'`);
-      await fs.remove(options.destDir);
+      await fs.emptyDir(options.destDir);
     }
 
     // ensure the target directory exists
     debug(`Ensuring target '${options.destDir}' exists`);
-    await fs.mkdirp(options.destDir);
+    await fs.ensureDir(options.destDir);
 
     if (options.extract) {
       // decompress download and move resulting files to final destination
