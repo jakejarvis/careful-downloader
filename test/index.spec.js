@@ -42,7 +42,7 @@ describe("checksum via downloaded text file", function () {
       },
     )).to.throw;
 
-    expect(fs.existsSync(path.join(__dirname, "temp", "hugo.exe"))).to.be.false;
+    expect(fs.existsSync(path.join(__dirname, "temp", "hugo_0.88.0_Windows-64bit.zip"))).to.be.false;
 
     // clean up
     fs.removeSync(path.join(__dirname, "temp"));
@@ -101,7 +101,7 @@ describe("checksum via string", function () {
     this.timeout(30000); // increase timeout to an excessive 30 seconds for CI
 
     expect(async () => download(
-      // download mismatching versions to trigger error
+      // validate against a clearly incorrect hash
       "https://github.com/gohugoio/hugo/releases/download/v0.88.0/hugo_0.88.0_Windows-64bit.zip",
       {
         checksumHash: "abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234",
@@ -111,7 +111,7 @@ describe("checksum via string", function () {
       },
     )).to.throw;
 
-    expect(fs.existsSync(path.join(__dirname, "temp", "hugo.exe"))).to.be.false;
+    expect(fs.existsSync(path.join(__dirname, "temp", "hugo_0.88.0_Windows-64bit.zip"))).to.be.false;
 
     // clean up
     fs.removeSync(path.join(__dirname, "temp"));
