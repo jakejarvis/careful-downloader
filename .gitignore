@@ -3,3 +3,4 @@ node_modules/
 # potentially leftover test artifacts
 downloads/
 test/temp/
+*.log

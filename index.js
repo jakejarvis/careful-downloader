@@ -1,6 +1,6 @@
 import path from "path";
 import fs from "fs-extra";
-import tempy from "tempy";
+import { temporaryDirectory } from "tempy";
 import decompress from "decompress";
 import isPathInside from "is-path-inside";
 
@@ -47,7 +47,7 @@ export default async (downloadUrl, options) => {
   }
 
   // initialize temporary directory
-  const tempDir = tempy.directory();
+  const tempDir = temporaryDirectory();
   debug(`Temp dir generated: '${tempDir}'`);
 
   try {
