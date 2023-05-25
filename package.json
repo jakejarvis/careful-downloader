@@ -1,6 +1,6 @@
 {
   "name": "careful-downloader",
-  "version": "2.0.2",
+  "version": "3.0.0",
   "description": "🕵️‍♀️ Downloads a file and its checksums, validates the hash, and optionally extracts it if safe.",
   "license": "MIT",
   "homepage": "https://github.com/jakejarvis/careful-downloader",
